@@ -13,12 +13,20 @@ func New() *Pins {
 	return &Pins{Values: [10]bool{true, true, true, true, true, true, true, true, true, true}}
 }
 
+func NewWith(pins Pins) *Pins {
+	newPins := New()
+	for i, v := range pins.Values {
+		newPins.Values[i] = v
+	}
+	return newPins
+}
+
 func (pins Pins) KnockDown(numbers []int) (*Pins, error) {
 	unique_numbers := util.Unique(numbers)
 	if !IsValidNumbers(unique_numbers) {
 		return nil, errors.New("numbersが有効ではありません")
 	}
-	newPins := New()
+	newPins := NewWith(pins)
 	for _, v := range unique_numbers {
 		newPins.Values[v-1] = false
 	}

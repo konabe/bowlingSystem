@@ -28,6 +28,15 @@ func TestKnockDown(t *testing.T) {
 	assert.NotNil(t, errorErr)
 }
 
+func TestKnockDownTwiceCalled(t *testing.T) {
+	pins := New()
+	firstPins, err := pins.KnockDown([]int{1, 2, 3})
+	assert.Nil(t, err)
+	SecondPins, err := firstPins.KnockDown([]int{4, 5, 6})
+	assert.Nil(t, err)
+	assert.Equal(t, []int{7, 8, 9, 10}, SecondPins.GetRestNumbers())
+}
+
 func TestIsValidNumbers(t *testing.T) {
 	assert.True(t, IsValidNumbers([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}))
 	assert.True(t, IsValidNumbers([]int{1, 3, 5, 7, 9}))

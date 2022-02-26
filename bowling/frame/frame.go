@@ -10,22 +10,23 @@ type Frame struct {
 	SecondRestPins *pins.Pins
 	FirstScore     int
 	SecondScore    int
-	bowlCount      int
+	BowlCount      int
 }
 
 func New() *Frame {
 	return &Frame{
-		FirstRestPins:  pins.New(),
-		SecondRestPins: pins.New(),
+		FirstRestPins:  nil,
+		SecondRestPins: nil,
 		FirstScore:     0,
 		SecondScore:    0,
-		bowlCount:      0,
+		BowlCount:      0,
 	}
 }
 
 func (frame *Frame) BowlFirst(numbers []int) error {
-	pins, err := frame.FirstRestPins.KnockDown(numbers)
-	if frame.bowlCount != 0 {
+	newPins := pins.New()
+	pins, err := newPins.KnockDown(numbers)
+	if frame.BowlCount != 0 {
 		return errors.New("不正なコールです")
 	}
 	if err != nil {
@@ -33,20 +34,23 @@ func (frame *Frame) BowlFirst(numbers []int) error {
 	}
 	frame.FirstRestPins = pins
 	frame.FirstScore = 10 - len(frame.FirstRestPins.GetRestNumbers())
-	frame.bowlCount++
+	frame.BowlCount++
 	return nil
 }
 
-func (frame *Frame) ThrowSecond(numbers []int) error {
+func (frame *Frame) BowlSecond(numbers []int) error {
 	pins, err := frame.FirstRestPins.KnockDown(numbers)
-	if frame.bowlCount != 1 {
+	if frame.BowlCount != 1 {
 		return errors.New("不正なコールです")
+	}
+	if frame.FirstScore == 10 {
+		return errors.New("すでにストライクをとっています")
 	}
 	if err != nil {
 		return errors.New("numbersが有効ではありません")
 	}
 	frame.SecondRestPins = pins
-	frame.SecondScore = frame.FirstScore - len(frame.SecondRestPins.GetRestNumbers())
-	frame.bowlCount++
+	frame.SecondScore = len(frame.FirstRestPins.GetRestNumbers()) - len(frame.SecondRestPins.GetRestNumbers())
+	frame.BowlCount++
 	return nil
 }
