@@ -47,28 +47,28 @@ func TestBowl_Normal_TenFrame(t *testing.T) {
 		},
 		{ // 一投目が3本のとき、二投目は7本のとき (スペア)、三投目は3本のとき
 			firstNumbers: []int{1, 3, 5}, firstScore: 3, firstRestNumbers: []int{2, 4, 6, 7, 8, 9, 10},
-			secondNumbers: []int{2, 4, 6, 7, 8, 9, 10}, secondScore: 7, secondRestNumbers: []int{},
+			secondNumbers: []int{2, 4, 6, 7, 8, 9, 10}, secondScore: 7, secondRestNumbers: nil,
 			thirdNumbers: []int{1, 2, 3}, thirdScore: 3, thirdRestNumbers: []int{4, 5, 6, 7, 8, 9, 10},
 		},
 		{ // ダブル 1,2
-			firstNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, firstScore: 10, firstRestNumbers: []int{},
-			secondNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, secondScore: 10, secondRestNumbers: []int{},
+			firstNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, firstScore: 10, firstRestNumbers: nil,
+			secondNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, secondScore: 10, secondRestNumbers: nil,
 			thirdNumbers: []int{1, 2, 3}, thirdScore: 3, thirdRestNumbers: []int{4, 5, 6, 7, 8, 9, 10},
 		},
 		{ // スペア、ストライク
 			firstNumbers: []int{1, 2, 3, 4, 5}, firstScore: 5, firstRestNumbers: []int{6, 7, 8, 9, 10},
-			secondNumbers: []int{6, 7, 8, 9, 10}, secondScore: 5, secondRestNumbers: []int{},
-			thirdNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, thirdScore: 10, thirdRestNumbers: []int{},
+			secondNumbers: []int{6, 7, 8, 9, 10}, secondScore: 5, secondRestNumbers: nil,
+			thirdNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, thirdScore: 10, thirdRestNumbers: nil,
 		},
 		{ // ストライク、スペア
-			firstNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, firstScore: 10, firstRestNumbers: []int{},
+			firstNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, firstScore: 10, firstRestNumbers: nil,
 			secondNumbers: []int{1, 2, 3, 4, 5}, secondScore: 5, secondRestNumbers: []int{6, 7, 8, 9, 10},
-			thirdNumbers: []int{6, 7, 8, 9, 10}, thirdScore: 5, thirdRestNumbers: []int{},
+			thirdNumbers: []int{6, 7, 8, 9, 10}, thirdScore: 5, thirdRestNumbers: nil,
 		},
 		{ // ターキー
-			firstNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, firstScore: 10, firstRestNumbers: []int{},
-			secondNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, secondScore: 10, secondRestNumbers: []int{},
-			thirdNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, thirdScore: 10, thirdRestNumbers: []int{},
+			firstNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, firstScore: 10, firstRestNumbers: nil,
+			secondNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, secondScore: 10, secondRestNumbers: nil,
+			thirdNumbers: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, thirdScore: 10, thirdRestNumbers: nil,
 		},
 	}
 	for _, c := range cases {

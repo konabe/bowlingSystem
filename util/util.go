@@ -2,7 +2,7 @@ package util
 
 func Unique(list []int) []int {
 	tmp := map[int]bool{}
-	result := []int{}
+	var result []int
 	for _, v := range list {
 		tmp[v] = true
 	}

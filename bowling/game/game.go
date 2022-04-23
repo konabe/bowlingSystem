@@ -38,10 +38,13 @@ func (game *Game) Bowl(numbers []int) error {
 	var err error
 	if game.BowlCount == 0 {
 		err = frame.BowlFirst(numbers)
+		game.FrameScores[game.FrameIndex] = frame.FirstScore
 	}
 	if game.BowlCount == 1 {
 		err = frame.BowlSecond(numbers)
+		game.FrameScores[game.FrameIndex] += frame.SecondScore
 	}
+	game.Frames[game.FrameIndex] = frame
 	game.Increment()
 	return err
 }

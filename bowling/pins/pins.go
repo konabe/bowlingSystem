@@ -13,7 +13,7 @@ func New() *Pins {
 	return &Pins{Values: [10]bool{true, true, true, true, true, true, true, true, true, true}}
 }
 
-func NewWith(pins Pins) *Pins {
+func newWith(pins Pins) *Pins {
 	newPins := New()
 	for i, v := range pins.Values {
 		newPins.Values[i] = v
@@ -21,20 +21,24 @@ func NewWith(pins Pins) *Pins {
 	return newPins
 }
 
+func availableNumbers() []int {
+	return []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+}
+
 func (pins Pins) KnockDown(numbers []int) (*Pins, error) {
-	unique_numbers := util.Unique(numbers)
-	if !IsValidNumbers(unique_numbers) {
+	uniqueNumbers := util.Unique(numbers)
+	if !isValidNumbers(uniqueNumbers) {
 		return nil, errors.New("numbersが有効ではありません")
 	}
-	newPins := NewWith(pins)
-	for _, v := range unique_numbers {
+	newPins := newWith(pins)
+	for _, v := range uniqueNumbers {
 		newPins.Values[v-1] = false
 	}
 	return newPins, nil
 }
 
 func (pins Pins) GetRestNumbers() []int {
-	resultPins := []int{}
+	var resultPins []int
 	for i, v := range pins.Values {
 		if v {
 			resultPins = append(resultPins, i+1)
@@ -43,10 +47,9 @@ func (pins Pins) GetRestNumbers() []int {
 	return resultPins
 }
 
-func IsValidNumbers(numbers []int) bool {
-	availableNumbers := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+func isValidNumbers(numbers []int) bool {
 	for _, v := range numbers {
-		if !util.Contains(availableNumbers, v) {
+		if !util.Contains(availableNumbers(), v) {
 			return false
 		}
 	}

@@ -38,10 +38,10 @@ func TestKnockDownTwiceCalled(t *testing.T) {
 }
 
 func TestIsValidNumbers(t *testing.T) {
-	assert.True(t, IsValidNumbers([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}))
-	assert.True(t, IsValidNumbers([]int{1, 3, 5, 7, 9}))
-	assert.True(t, IsValidNumbers([]int{1}))
-	assert.True(t, IsValidNumbers([]int{})) // ピンが倒れないケースがあるので
-	assert.False(t, IsValidNumbers([]int{0, 1, 3, 5, 7, 9}))
-	assert.False(t, IsValidNumbers([]int{0}))
+	assert.True(t, isValidNumbers([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}))
+	assert.True(t, isValidNumbers([]int{1, 3, 5, 7, 9}))
+	assert.True(t, isValidNumbers([]int{1}))
+	assert.True(t, isValidNumbers([]int{})) // ピンが倒れないケースがあるので
+	assert.False(t, isValidNumbers([]int{0, 1, 3, 5, 7, 9}))
+	assert.False(t, isValidNumbers([]int{0}))
 }

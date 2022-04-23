@@ -44,7 +44,7 @@ func TestBowl_Normal(t *testing.T) {
 		},
 		{ // 一投目が3本のとき、二投目は7本のとき (スペア)
 			firstNumbers: []int{1, 3, 5}, firstScore: 3, firstRestNumbers: []int{2, 4, 6, 7, 8, 9, 10},
-			secondNumbers: []int{2, 4, 6, 7, 8, 9, 10}, secondScore: 7, secondRestNumbers: []int{},
+			secondNumbers: []int{2, 4, 6, 7, 8, 9, 10}, secondScore: 7, secondRestNumbers: nil,
 		},
 	}
 	for _, c := range cases {
