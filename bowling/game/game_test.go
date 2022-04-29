@@ -24,14 +24,14 @@ func TestIsValidBowl(t *testing.T) {
 		{frameIndex: 0, bowlCount: 3, isValid: false},
 		{frameIndex: 8, bowlCount: 0, isValid: true},
 		{frameIndex: 8, bowlCount: 1, isValid: true},
-		{frameIndex: 9, bowlCount: -1, isValid: false},
 		{frameIndex: 9, bowlCount: 0, isValid: true},
 		{frameIndex: 9, bowlCount: 1, isValid: true},
-		{frameIndex: 9, bowlCount: 2, isValid: true},
-		{frameIndex: 9, bowlCount: 3, isValid: false},
-		{frameIndex: 10, bowlCount: 0, isValid: false},
-		{frameIndex: 10, bowlCount: 1, isValid: false},
-		{frameIndex: 10, bowlCount: 2, isValid: false},
+		{frameIndex: 10, bowlCount: 0, isValid: true},
+		{frameIndex: 10, bowlCount: 1, isValid: true},
+		{frameIndex: 11, bowlCount: 0, isValid: true},
+		{frameIndex: 11, bowlCount: 1, isValid: true},
+		{frameIndex: 12, bowlCount: 0, isValid: false},
+		{frameIndex: 12, bowlCount: 1, isValid: false},
 	}
 	for _, c := range cases {
 		game := New()
@@ -67,8 +67,10 @@ func TestIncrement(t *testing.T) {
 		{frameIndex: 8, bowlCount: 1},
 		{frameIndex: 9, bowlCount: 0},
 		{frameIndex: 9, bowlCount: 1},
-		{frameIndex: 9, bowlCount: 2},
-		{frameIndex: 9, bowlCount: 2},
+		{frameIndex: 10, bowlCount: 0},
+		{frameIndex: 10, bowlCount: 1},
+		{frameIndex: 11, bowlCount: 0},
+		{frameIndex: 11, bowlCount: 1},
 	}
 	game := New()
 	for i, c := range cases {
@@ -81,13 +83,13 @@ func TestIncrement(t *testing.T) {
 func TestBowl(t *testing.T) {
 	game := New()
 	game.Bowl([]int{1, 2, 3})
-	assert.Equal(t, [10]int{3, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, [12]int{3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
 	assert.Equal(t, true, game.IsValidBowl())
 	game.Bowl([]int{4, 5, 6})
-	assert.Equal(t, [10]int{6, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, [12]int{6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
 	game.Bowl([]int{4, 5, 6})
 	game.Bowl([]int{})
-	assert.Equal(t, [10]int{6, 3, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, [12]int{6, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
 	game.Bowl([]int{})
 	game.Bowl([]int{})
 	game.Bowl([]int{4, 5, 6})
@@ -95,5 +97,5 @@ func TestBowl(t *testing.T) {
 	game.Bowl([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 	game.Bowl([]int{})
 	game.Bowl([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-	assert.Equal(t, [10]int{6, 3, 0, 10, 10, 10, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, [12]int{6, 3, 0, 10, 10, 10, 0, 0, 0, 0, 0, 0}, game.FrameScores)
 }

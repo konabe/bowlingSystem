@@ -44,18 +44,18 @@ func (game *Game) Bowl(numbers []int) error {
 	}
 	game.Frames[game.FrameIndex] = frame
 	game.Increment()
+	if game.BowlCount == 1 && frame.FirstScore == 10 {
+		game.Increment()
+	}
 	return err
 }
 
 //IsValidBowl Bowlメソッドのコールが有効かどうかを判定する
 func (game *Game) IsValidBowl() bool {
-	if game.FrameIndex < 0 || game.FrameIndex > 9 {
+	if game.FrameIndex < 0 || game.FrameIndex > len(game.Frames)-1 {
 		return false
 	}
-	if game.BowlCount < 0 || game.BowlCount > 2 {
-		return false
-	}
-	if game.FrameIndex != 9 && game.BowlCount > 1 {
+	if game.BowlCount < 0 || game.BowlCount > 1 {
 		return false
 	}
 	return true
@@ -67,23 +67,13 @@ func (game *Game) Increment() {
 		game.BowlCount++
 		return
 	}
-	if game.FrameIndex < 9 && game.BowlCount == 1 {
+	if game.FrameIndex < 12 && game.BowlCount == 1 {
 		game.BowlCount = 0
 		game.FrameIndex++
 		return
 	}
-	if game.FrameIndex == 9 && (game.BowlCount == 0 || game.BowlCount == 1) {
-		game.BowlCount++
-		return
-	}
-	if game.FrameIndex == 9 && game.BowlCount == 2 {
-		return
-	}
-	if game.FrameIndex < 10 {
-		return
-	}
 }
 
-func (game Game) Update() {
+func (game Game) NotifyUpdate() {
 	game.Observable.UpdateFrames(game.Frames)
 }
