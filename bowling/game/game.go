@@ -2,34 +2,33 @@ package game
 
 import (
 	"bowlingSystem/bowling/frame"
+	"bowlingSystem/bowling/scoreboard/gameObservable"
+
 	"errors"
 )
 
 type Game struct {
-	Frames        [9]frame.Frame
-	FrameScores   [9]int
-	TenFrame      frame.TenFrame
-	TenFrameScore int
-	FrameIndex    int
-	BowlCount     int
+	Frames      [10]frame.Frame
+	FrameScores [10]int
+	FrameIndex  int
+	BowlCount   int
+	Observable  gameObservable.GameObservable
 }
 
 func New() *Game {
-	frames := [9]frame.Frame{}
-	frameScores := [9]int{}
-	for i := 0; i < len(frames); i++ {
-		frames[i] = *frame.New()
-		frameScores[i] = 0
+	newGame := &Game{
+		FrameIndex: 0,
+		BowlCount:  0,
 	}
-
-	return &Game{
-		Frames:      frames,
-		FrameScores: frameScores,
-		FrameIndex:  0,
-		BowlCount:   0,
+	for i, _ := range newGame.Frames {
+		newGame.Frames[i] = *frame.New()
+		newGame.FrameScores[i] = 0
 	}
+	newGame.Frames[9].IsForTenFrame = true
+	return newGame
 }
 
+//Bowl ボウルを投げる
 func (game *Game) Bowl(numbers []int) error {
 	if !game.IsValidBowl() {
 		return errors.New("Bowlメソッドが有効ではありません")
@@ -44,11 +43,16 @@ func (game *Game) Bowl(numbers []int) error {
 		err = frame.BowlSecond(numbers)
 		game.FrameScores[game.FrameIndex] += frame.SecondScore
 	}
+	if game.BowlCount == 2 {
+		err = frame.BowlThird(numbers)
+		game.FrameScores[game.FrameIndex] += frame.ThirdScore
+	}
 	game.Frames[game.FrameIndex] = frame
 	game.Increment()
 	return err
 }
 
+//IsValidBowl Bowlメソッドのコールが有効かどうかを判定する
 func (game *Game) IsValidBowl() bool {
 	if game.FrameIndex < 0 || game.FrameIndex > 9 {
 		return false
@@ -62,6 +66,7 @@ func (game *Game) IsValidBowl() bool {
 	return true
 }
 
+//Increment 投球のインデックスを１つインクリメントする
 func (game *Game) Increment() {
 	if game.BowlCount == 0 {
 		game.BowlCount++
@@ -82,4 +87,8 @@ func (game *Game) Increment() {
 	if game.FrameIndex < 10 {
 		return
 	}
+}
+
+func (game Game) Update() {
+	game.Observable.UpdateFrames(game.Frames)
 }

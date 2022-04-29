@@ -81,13 +81,13 @@ func TestIncrement(t *testing.T) {
 func TestBowl(t *testing.T) {
 	game := New()
 	game.Bowl([]int{1, 2, 3})
-	assert.Equal(t, [9]int{3, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, [10]int{3, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
 	assert.Equal(t, true, game.IsValidBowl())
 	game.Bowl([]int{4, 5, 6})
-	assert.Equal(t, [9]int{6, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, [10]int{6, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
 	game.Bowl([]int{4, 5, 6})
 	game.Bowl([]int{})
-	assert.Equal(t, [9]int{6, 3, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, [10]int{6, 3, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
 	game.Bowl([]int{})
 	game.Bowl([]int{})
 	game.Bowl([]int{4, 5, 6})
@@ -95,5 +95,5 @@ func TestBowl(t *testing.T) {
 	game.Bowl([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 	game.Bowl([]int{})
 	game.Bowl([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-	assert.Equal(t, [9]int{6, 3, 0, 10, 10, 10, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, [10]int{6, 3, 0, 10, 10, 10, 0, 0, 0, 0}, game.FrameScores)
 }

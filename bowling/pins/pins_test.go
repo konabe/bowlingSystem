@@ -15,13 +15,13 @@ func TestGetRestNumbers(t *testing.T) {
 func TestKnockDown(t *testing.T) {
 	pins := New()
 	newPins, err := pins.KnockDown([]int{1, 2, 3, 4, 5})
-	assert.Equal(t, [10]bool{false, false, false, false, false, true, true, true, true, true}, newPins.Values)
+	assert.Equal(t, [10]bool{false, false, false, false, false, true, true, true, true, true}, newPins.values)
 	assert.Nil(t, err)
 	newPinsNothing, errNothing := pins.KnockDown([]int{})
-	assert.Equal(t, [10]bool{true, true, true, true, true, true, true, true, true, true}, newPinsNothing.Values)
+	assert.Equal(t, [10]bool{true, true, true, true, true, true, true, true, true, true}, newPinsNothing.values)
 	assert.Nil(t, errNothing)
 	newPinsFull, errFull := pins.KnockDown([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-	assert.Equal(t, [10]bool{false, false, false, false, false, false, false, false, false, false}, newPinsFull.Values)
+	assert.Equal(t, [10]bool{false, false, false, false, false, false, false, false, false, false}, newPinsFull.values)
 	assert.Nil(t, errFull)
 	errorPins, errorErr := pins.KnockDown([]int{0})
 	assert.Nil(t, errorPins)
@@ -35,13 +35,4 @@ func TestKnockDownTwiceCalled(t *testing.T) {
 	SecondPins, err := firstPins.KnockDown([]int{4, 5, 6})
 	assert.Nil(t, err)
 	assert.Equal(t, []int{7, 8, 9, 10}, SecondPins.GetRestNumbers())
-}
-
-func TestIsValidNumbers(t *testing.T) {
-	assert.True(t, isValidNumbers([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}))
-	assert.True(t, isValidNumbers([]int{1, 3, 5, 7, 9}))
-	assert.True(t, isValidNumbers([]int{1}))
-	assert.True(t, isValidNumbers([]int{})) // ピンが倒れないケースがあるので
-	assert.False(t, isValidNumbers([]int{0, 1, 3, 5, 7, 9}))
-	assert.False(t, isValidNumbers([]int{0}))
 }
