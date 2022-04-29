@@ -1,7 +1,7 @@
 package gameObservable
 
-import "bowlingSystem/bowling/frame"
+import "bowlingSystem/bowling/pinsPare"
 
 type GameObservable interface {
-	UpdateFrames([10]frame.Frame)
+	UpdateFrames([12]pinsPare.PinsPair)
 }

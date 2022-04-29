@@ -1,8 +1,8 @@
 package scoreboard
 
 import (
-	"bowlingSystem/bowling/frame"
 	"bowlingSystem/bowling/game"
+	"bowlingSystem/bowling/pinsPare"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -36,6 +36,7 @@ func TestCalculateScores(t *testing.T) {
 	game1.Bowl([]int{1, 2, 3, 4, 5, 6, 7, 8, 9})
 	game1.Bowl([]int{10})
 	game1.Bowl([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	game1.Bowl([]int{})
 	game1.Update()
 	assert.Equal(t, "42(6)2-(8)", scoreboard.Print())
 }
@@ -56,7 +57,7 @@ func TestUpdateCurrentFrame(t *testing.T) {
 	}
 	for _, c := range cases {
 		scoreFrame := newScoreFrame()
-		frame := frame.New()
+		frame := pinsPare.New()
 		frame.BowlFirst(c.FirstNumbers)
 		frame.BowlSecond(c.SecondNumbers)
 		scoreFrame.updateCurrentFrame(*frame)

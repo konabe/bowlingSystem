@@ -1,7 +1,7 @@
 package scoreboard
 
 import (
-	"bowlingSystem/bowling/frame"
+	"bowlingSystem/bowling/pinsPare"
 	"fmt"
 )
 
@@ -97,7 +97,7 @@ func (scoreFrame ScoreFrame) print() string {
 	return result
 }
 
-func (scoreFrame *ScoreFrame) updateCurrentFrame(currentFrame frame.Frame) {
+func (scoreFrame *ScoreFrame) updateCurrentFrame(currentFrame pinsPare.PinsPair) {
 	firstScore := currentFrame.FirstScore
 	secondScore := currentFrame.SecondScore
 	if firstScore == 10 {
@@ -128,13 +128,13 @@ func (scoreFrame *ScoreFrame) updateCurrentFrame(currentFrame frame.Frame) {
 	scoreFrame.TotalScore = firstScore + secondScore
 }
 
-func (scoreFrame *ScoreFrame) updateLastFrame(lastFrame frame.Frame) {
+func (scoreFrame *ScoreFrame) updateLastFrame(lastFrame pinsPare.PinsPair) {
 	scoreFrame.updateCurrentFrame(lastFrame)
 	//thirdScore := scoreFrame.ThirdScore
 }
 
 type Scoreboard struct {
-	frames [10]ScoreFrame
+	frames [12]ScoreFrame
 }
 
 func New() *Scoreboard {
@@ -153,7 +153,7 @@ func (scoreboard Scoreboard) Print() string {
 	return result
 }
 
-func (scoreboard *Scoreboard) UpdateFrames(frames [10]frame.Frame) {
+func (scoreboard *Scoreboard) UpdateFrames(frames [12]pinsPare.PinsPair) {
 	for i, _ := range scoreboard.frames {
 		scoreboard.frames[i].updateCurrentFrame(frames[i])
 	}

@@ -1,15 +1,15 @@
 package game
 
 import (
-	"bowlingSystem/bowling/frame"
+	"bowlingSystem/bowling/pinsPare"
 	"bowlingSystem/bowling/scoreboard/gameObservable"
 
 	"errors"
 )
 
 type Game struct {
-	Frames      [10]frame.Frame
-	FrameScores [10]int
+	Frames      [12]pinsPare.PinsPair
+	FrameScores [12]int
 	FrameIndex  int
 	BowlCount   int
 	Observable  gameObservable.GameObservable
@@ -21,10 +21,9 @@ func New() *Game {
 		BowlCount:  0,
 	}
 	for i, _ := range newGame.Frames {
-		newGame.Frames[i] = *frame.New()
+		newGame.Frames[i] = *pinsPare.New()
 		newGame.FrameScores[i] = 0
 	}
-	newGame.Frames[9].IsForTenFrame = true
 	return newGame
 }
 
@@ -42,10 +41,6 @@ func (game *Game) Bowl(numbers []int) error {
 	if game.BowlCount == 1 {
 		err = frame.BowlSecond(numbers)
 		game.FrameScores[game.FrameIndex] += frame.SecondScore
-	}
-	if game.BowlCount == 2 {
-		err = frame.BowlThird(numbers)
-		game.FrameScores[game.FrameIndex] += frame.ThirdScore
 	}
 	game.Frames[game.FrameIndex] = frame
 	game.Increment()
