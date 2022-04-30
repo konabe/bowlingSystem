@@ -2,7 +2,7 @@ package scoreboard
 
 import (
 	"bowlingSystem/bowling/game"
-	"bowlingSystem/bowling/pinsPare"
+	"bowlingSystem/bowling/pinsPair"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -75,10 +75,58 @@ func TestUpdateCurrentFrame(t *testing.T) {
 	}
 	for _, c := range cases {
 		scoreFrame := newScoreFrame()
-		frame := pinsPare.New()
+		frame := pinsPair.New()
 		frame.BowlFirst(c.FirstNumbers)
 		frame.BowlSecond(c.SecondNumbers)
 		scoreFrame.updateCurrentFrame(*frame)
 		assert.Equal(t, c.ExpectedPrint, scoreFrame.print(false))
 	}
+}
+
+func TestUpdateLastFrame_error(t *testing.T) {
+	ScoreFrame := newScoreFrame()
+	pinsPare1 := pinsPair.New()
+	pinsPare1.BowlFirst([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	ScoreFrame.updateLastFrame([]pinsPair.PinsPair{*pinsPare1})
+	assert.Equal(t, ScoreSymbol(""), ScoreFrame.FirstScore.Symbol)
+	assert.Equal(t, ScoreSymbol(""), ScoreFrame.SecondScore.Symbol)
+	assert.Equal(t, ScoreSymbol(""), ScoreFrame.ThirdScore.Symbol)
+}
+
+func TestUpdateLastFrame_10_10_0(t *testing.T) {
+	ScoreFrame := newScoreFrame()
+	pinsPare1 := pinsPair.New()
+	pinsPare1.BowlFirst([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	pinsPare2 := pinsPair.New()
+	pinsPare2.BowlFirst([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	pinsPare3 := pinsPair.New()
+	pinsPare3.BowlFirst([]int{})
+	ScoreFrame.updateLastFrame([]pinsPair.PinsPair{*pinsPare1, *pinsPare2, *pinsPare3})
+	assert.Equal(t, "XX-(20)", ScoreFrame.print(false))
+}
+
+func TestUpdateLastFrame_10_0_10(t *testing.T) {
+	ScoreFrame := newScoreFrame()
+	pinsPare1 := pinsPair.New()
+	pinsPare1.BowlFirst([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	pinsPare2 := pinsPair.New()
+	pinsPare2.BowlFirst([]int{})
+	pinsPare2.BowlSecond([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	pinsPare3 := pinsPair.New()
+	pinsPare3.BowlFirst([]int{})
+	ScoreFrame.updateLastFrame([]pinsPair.PinsPair{*pinsPare1, *pinsPare2, *pinsPare3})
+	assert.Equal(t, "X-/(20)", ScoreFrame.print(false))
+}
+
+func TestUpdateLastFrame_4_6_0(t *testing.T) {
+	ScoreFrame := newScoreFrame()
+	pinsPare1 := pinsPair.New()
+	pinsPare1.BowlFirst([]int{1, 2, 3, 4})
+	pinsPare1.BowlSecond([]int{5, 6, 7, 8, 9, 10})
+	pinsPare2 := pinsPair.New()
+	pinsPare2.BowlFirst([]int{})
+	pinsPare3 := pinsPair.New()
+	pinsPare3.BowlFirst([]int{})
+	ScoreFrame.updateLastFrame([]pinsPair.PinsPair{*pinsPare1, *pinsPare2, *pinsPare3})
+	assert.Equal(t, "4/-(10)", ScoreFrame.print(false))
 }

@@ -1,7 +1,7 @@
 package scoreboard
 
 import (
-	"bowlingSystem/bowling/pinsPare"
+	"bowlingSystem/bowling/pinsPair"
 	"fmt"
 )
 
@@ -101,7 +101,7 @@ func (scoreFrame ScoreFrame) print(isCumulative bool) string {
 	return result
 }
 
-func (scoreFrame *ScoreFrame) updateCurrentFrame(currentFrame pinsPare.PinsPair) {
+func (scoreFrame *ScoreFrame) updateCurrentFrame(currentFrame pinsPair.PinsPair) {
 	firstScore := currentFrame.FirstScore
 	secondScore := currentFrame.SecondScore
 	scoreFrame.FirstScore.Number = firstScore
@@ -128,20 +128,23 @@ func (scoreFrame *ScoreFrame) updateCurrentFrame(currentFrame pinsPare.PinsPair)
 	}
 }
 
-func (scoreFrame *ScoreFrame) updateLastFrame(tensPinsPares []pinsPare.PinsPair) {
+func (scoreFrame *ScoreFrame) updateLastFrame(tensPinsPares []pinsPair.PinsPair) {
 	if len(tensPinsPares) != 3 {
 		return
 	}
 	scoreFrame.IsLastFrame = true
 	scoreFrame.FirstScore.Number = tensPinsPares[0].FirstScore
+	scoreFrame.TotalScore = scoreFrame.FirstScore.Number
 	scoreFrame.FirstScore.Symbol = Unset
 
 	if tensPinsPares[0].FirstScore == 10 {
 		scoreFrame.FirstScore.Symbol = Strike
 		if tensPinsPares[1].FirstScore == 10 {
 			scoreFrame.SecondScore.Number = 10
+			scoreFrame.TotalScore += scoreFrame.SecondScore.Number
 			scoreFrame.SecondScore.Symbol = Strike
 			scoreFrame.ThirdScore.Number = tensPinsPares[2].FirstScore
+			scoreFrame.TotalScore += scoreFrame.ThirdScore.Number
 			scoreFrame.ThirdScore.Symbol = Unset
 			if tensPinsPares[2].FirstScore == 10 {
 				scoreFrame.ThirdScore.Symbol = Strike
@@ -152,8 +155,10 @@ func (scoreFrame *ScoreFrame) updateLastFrame(tensPinsPares []pinsPare.PinsPair)
 			return
 		}
 		scoreFrame.SecondScore.Number = tensPinsPares[1].FirstScore
+		scoreFrame.TotalScore += scoreFrame.SecondScore.Number
 		scoreFrame.SecondScore.Symbol = Unset
 		scoreFrame.ThirdScore.Number = tensPinsPares[1].SecondScore
+		scoreFrame.TotalScore += scoreFrame.ThirdScore.Number
 		scoreFrame.ThirdScore.Symbol = Unset
 		if tensPinsPares[1].FirstScore == 0 {
 			scoreFrame.SecondScore.Symbol = Mistake
@@ -168,6 +173,7 @@ func (scoreFrame *ScoreFrame) updateLastFrame(tensPinsPares []pinsPare.PinsPair)
 	}
 
 	scoreFrame.SecondScore.Number = tensPinsPares[0].SecondScore
+	scoreFrame.TotalScore += scoreFrame.SecondScore.Number
 	scoreFrame.SecondScore.Symbol = Unset
 	if tensPinsPares[0].FirstScore == 0 {
 		scoreFrame.FirstScore.Symbol = Gutter
@@ -175,6 +181,7 @@ func (scoreFrame *ScoreFrame) updateLastFrame(tensPinsPares []pinsPare.PinsPair)
 	if tensPinsPares[0].FirstScore+tensPinsPares[0].SecondScore == 10 {
 		scoreFrame.SecondScore.Symbol = Spare
 		scoreFrame.ThirdScore.Number = tensPinsPares[1].FirstScore
+		scoreFrame.TotalScore += scoreFrame.ThirdScore.Number
 		scoreFrame.ThirdScore.Symbol = Unset
 		if tensPinsPares[1].FirstScore == 10 {
 			scoreFrame.ThirdScore.Symbol = Strike
@@ -210,17 +217,13 @@ func (scoreboard Scoreboard) Print() string {
 	return result
 }
 
-func (scoreboard *Scoreboard) UpdateFrames(pinsPairs [12]pinsPare.PinsPair) {
+func (scoreboard *Scoreboard) UpdateFrames(pinsPairs [12]pinsPair.PinsPair) {
 	for i, _ := range scoreboard.frames {
 		if i < 9 {
 			scoreboard.frames[i].updateCurrentFrame(pinsPairs[i])
 		}
 	}
 	scoreboard.frames[9].updateLastFrame(pinsPairs[9:])
-	scoreboard.frames[9].TotalScore =
-		scoreboard.frames[9].FirstScore.Number +
-			scoreboard.frames[9].SecondScore.Number +
-			scoreboard.frames[9].ThirdScore.Number
 	scoreboard.recalculatePreviousFrames()
 	for i, frame := range scoreboard.frames {
 		if i == 0 {

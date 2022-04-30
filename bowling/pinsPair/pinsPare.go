@@ -1,4 +1,4 @@
-package pinsPare
+package pinsPair
 
 import (
 	"bowlingSystem/bowling/pins"

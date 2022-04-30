@@ -1,14 +1,14 @@
 package game
 
 import (
-	"bowlingSystem/bowling/pinsPare"
+	"bowlingSystem/bowling/pinsPair"
 	"bowlingSystem/bowling/scoreboard/gameObservable"
 
 	"errors"
 )
 
 type Game struct {
-	Frames      [12]pinsPare.PinsPair
+	Frames      [12]pinsPair.PinsPair
 	FrameScores [12]int
 	FrameIndex  int
 	BowlCount   int
@@ -21,7 +21,7 @@ func New() *Game {
 		BowlCount:  0,
 	}
 	for i, _ := range newGame.Frames {
-		newGame.Frames[i] = *pinsPare.New()
+		newGame.Frames[i] = *pinsPair.New()
 		newGame.FrameScores[i] = 0
 	}
 	return newGame
