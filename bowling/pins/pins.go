@@ -2,7 +2,6 @@ package pins
 
 import (
 	pinNumbers "bowlingSystem/bowling/pins/numbers"
-	"errors"
 )
 
 type Pins struct {
@@ -10,7 +9,11 @@ type Pins struct {
 }
 
 func New() *Pins {
-	return &Pins{values: [10]bool{true, true, true, true, true, true, true, true, true, true}}
+	pins := &Pins{}
+	for i, _ := range pins.values {
+		pins.values[i] = true
+	}
+	return pins
 }
 
 func (pins Pins) KnockDown(numbers []int) (*Pins, error) {
@@ -23,14 +26,14 @@ func (pins Pins) KnockDown(numbers []int) (*Pins, error) {
 	}
 }
 
-func (pins Pins) GetRestNumbers() []int {
+func (pins Pins) GetRestNumbers() pinNumbers.PinNumbers {
 	var resultPins []int
 	for i, v := range pins.values {
 		if v {
 			resultPins = append(resultPins, i+1)
 		}
 	}
-	return resultPins
+	return pinNumbers.New(resultPins...)
 }
 
 func copy(pins Pins) *Pins {
@@ -43,9 +46,6 @@ func copy(pins Pins) *Pins {
 
 func (pins *Pins) knockDown(numbers []int) error {
 	pn := pinNumbers.New(numbers...)
-	if pn == nil {
-		return errors.New("numbersが有効ではありません")
-	}
 	for _, v := range pn.Values {
 		pins.values[v-1] = false
 	}

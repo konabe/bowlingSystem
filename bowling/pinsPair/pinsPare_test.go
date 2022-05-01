@@ -1,6 +1,7 @@
 package pinsPair
 
 import (
+	pinNumbers "bowlingSystem/bowling/pins/numbers"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -11,7 +12,7 @@ func TestBowlFirst(t *testing.T) {
 	err := frame.BowlFirst([]int{1, 2, 3})
 	assert.Nil(t, err)
 	assert.Equal(t, 3, frame.FirstScore)
-	assert.Equal(t, []int{4, 5, 6, 7, 8, 9, 10}, frame.FirstRestPins.GetRestNumbers())
+	assert.ElementsMatch(t, pinNumbers.New(4, 5, 6, 7, 8, 9, 10).Values, frame.FirstRestPins.GetRestNumbers().Values)
 	assert.Equal(t, 1, frame.BowlCount)
 }
 
@@ -52,7 +53,7 @@ func TestBowl_Normal(t *testing.T) {
 		err := frame.BowlFirst(c.firstNumbers)
 		assert.Nil(t, err)
 		assert.Equal(t, c.firstScore, frame.FirstScore)
-		assert.Equal(t, c.firstRestNumbers, frame.FirstRestPins.GetRestNumbers())
+		assert.ElementsMatch(t, pinNumbers.New(c.firstRestNumbers...).Values, frame.FirstRestPins.GetRestNumbers().Values)
 		assert.Equal(t, 1, frame.BowlCount)
 
 		// 二投目
@@ -60,8 +61,8 @@ func TestBowl_Normal(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, c.firstScore, frame.FirstScore)
 		assert.Equal(t, c.secondScore, frame.SecondScore)
-		assert.Equal(t, c.firstRestNumbers, frame.FirstRestPins.GetRestNumbers())
-		assert.Equal(t, c.secondRestNumbers, frame.SecondRestPins.GetRestNumbers())
+		assert.ElementsMatch(t, pinNumbers.New(c.firstRestNumbers...).Values, frame.FirstRestPins.GetRestNumbers().Values)
+		assert.ElementsMatch(t, pinNumbers.New(c.secondRestNumbers...).Values, frame.SecondRestPins.GetRestNumbers().Values)
 		assert.Equal(t, 2, frame.BowlCount)
 	}
 }

@@ -36,7 +36,7 @@ func (frame *PinsPair) BowlFirst(numbers []int) error {
 		return errors.New("numbersが有効ではありません")
 	}
 	frame.FirstRestPins = pins
-	frame.FirstScore = 10 - len(frame.FirstRestPins.GetRestNumbers())
+	frame.FirstScore = 10 - frame.FirstRestPins.GetRestNumbers().Len()
 	frame.BowlCount++
 	return nil
 }
@@ -53,7 +53,7 @@ func (frame *PinsPair) BowlSecond(numbers []int) error {
 		return errors.New("numbersが有効ではありません")
 	}
 	frame.SecondRestPins = pins
-	frame.SecondScore = len(frame.FirstRestPins.GetRestNumbers()) - len(frame.SecondRestPins.GetRestNumbers())
+	frame.SecondScore = frame.FirstRestPins.GetRestNumbers().Len() - frame.SecondRestPins.GetRestNumbers().Len()
 	frame.BowlCount++
 	return nil
 }

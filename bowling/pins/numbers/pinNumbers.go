@@ -2,18 +2,25 @@ package pinNumbers
 
 import "bowlingSystem/util"
 
+//PinNumbers ピンの番号を指定する場合に使用します。不正なデータの場合はnilが返却されます。
 type PinNumbers struct {
 	Values []int
 }
 
-func New(numbers ...int) *PinNumbers {
+func New(numbers ...int) PinNumbers {
 	uniqueNumbers := util.Unique(numbers)
 	if !isValidNumbers(uniqueNumbers) {
-		return nil
+		return PinNumbers{
+			Values: []int{},
+		}
 	}
-	return &PinNumbers{
+	return PinNumbers{
 		Values: uniqueNumbers,
 	}
+}
+
+func (pinNumbers PinNumbers) Len() int {
+	return len(pinNumbers.Values)
 }
 
 func availableNumbers() []int {
