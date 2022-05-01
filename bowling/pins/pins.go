@@ -16,24 +16,14 @@ func New() *Pins {
 	return pins
 }
 
-func (pins Pins) KnockDown(numbers []int) (*Pins, error) {
+func (pins Pins) KnockDown(numbers []int) *Pins {
 	newPins := copy(pins)
-	err := newPins.knockDown(numbers)
-	if err == nil {
-		return newPins, nil
-	} else {
-		return nil, err
-	}
+	newPins.knockDown(numbers)
+	return newPins
 }
 
 func (pins Pins) GetRestNumbers() pinNumbers.PinNumbers {
-	var resultPins []int
-	for i, v := range pins.values {
-		if v {
-			resultPins = append(resultPins, i+1)
-		}
-	}
-	return pinNumbers.New(resultPins...)
+	return pinNumbers.MakeWith(pins.values)
 }
 
 func copy(pins Pins) *Pins {
@@ -44,10 +34,9 @@ func copy(pins Pins) *Pins {
 	return newPins
 }
 
-func (pins *Pins) knockDown(numbers []int) error {
+func (pins *Pins) knockDown(numbers []int) {
 	pn := pinNumbers.New(numbers...)
 	for _, v := range pn.Values {
 		pins.values[v-1] = false
 	}
-	return nil
 }

@@ -28,12 +28,9 @@ func New() *PinsPair {
 
 func (frame *PinsPair) BowlFirst(numbers []int) error {
 	newPins := pins.New()
-	pins, err := newPins.KnockDown(numbers)
+	pins := newPins.KnockDown(numbers)
 	if frame.BowlCount != 0 {
 		return errors.New("不正なコールです")
-	}
-	if err != nil {
-		return errors.New("numbersが有効ではありません")
 	}
 	frame.FirstRestPins = pins
 	frame.FirstScore = 10 - frame.FirstRestPins.GetRestNumbers().Len()
@@ -42,15 +39,12 @@ func (frame *PinsPair) BowlFirst(numbers []int) error {
 }
 
 func (frame *PinsPair) BowlSecond(numbers []int) error {
-	pins, err := frame.FirstRestPins.KnockDown(numbers)
+	pins := frame.FirstRestPins.KnockDown(numbers)
 	if frame.BowlCount != 1 {
 		return errors.New("不正なコールです")
 	}
 	if frame.FirstScore == 10 {
 		return errors.New("すでにストライクをとっています")
-	}
-	if err != nil {
-		return errors.New("numbersが有効ではありません")
 	}
 	frame.SecondRestPins = pins
 	frame.SecondScore = frame.FirstRestPins.GetRestNumbers().Len() - frame.SecondRestPins.GetRestNumbers().Len()
