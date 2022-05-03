@@ -1,8 +1,6 @@
 package pins
 
-import (
-	pinNumbers "bowlingSystem/bowling/pins/numbers"
-)
+import "bowlingSystem/bowling/game/pins/numbers"
 
 type Pins struct {
 	values [10]bool

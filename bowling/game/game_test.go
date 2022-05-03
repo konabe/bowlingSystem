@@ -1,6 +1,7 @@
 package game
 
 import (
+	"bowlingSystem/bowling/scoreboard"
 	"fmt"
 	"testing"
 
@@ -34,10 +35,10 @@ func TestIsValidBowl(t *testing.T) {
 		{frameIndex: 12, bowlCount: 1, isValid: false},
 	}
 	for _, c := range cases {
-		game := New()
-		game.FrameIndex = c.frameIndex
-		game.BowlCount = c.bowlCount
-		msg := fmt.Sprintf("currentFrame: %d, bowlCount: %d", game.FrameIndex, game.BowlCount)
+		game := New(nil)
+		game.frameIndex = c.frameIndex
+		game.bowlCount = c.bowlCount
+		msg := fmt.Sprintf("currentFrame: %d, bowlCount: %d", game.frameIndex, game.bowlCount)
 		assert.Equal(t, c.isValid, game.IsValidBowl(), msg)
 	}
 }
@@ -72,30 +73,50 @@ func TestIncrement(t *testing.T) {
 		{frameIndex: 11, bowlCount: 0},
 		{frameIndex: 11, bowlCount: 1},
 	}
-	game := New()
+	game := New(nil)
 	for i, c := range cases {
-		assert.Equal(t, c.frameIndex, game.FrameIndex, fmt.Sprintf("frameIndex: id=%d", i))
-		assert.Equal(t, c.bowlCount, game.BowlCount, fmt.Sprintf("bowlCount: id=%d", i))
+		assert.Equal(t, c.frameIndex, game.frameIndex, fmt.Sprintf("frameIndex: id=%d", i))
+		assert.Equal(t, c.bowlCount, game.bowlCount, fmt.Sprintf("bowlCount: id=%d", i))
 		game.Increment()
 	}
 }
 
 func TestBowl(t *testing.T) {
-	game := New()
+	game := New(nil)
 	game.Bowl([]int{1, 2, 3})
-	assert.Equal(t, [12]int{3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, 3, game.Pairs[0].FirstScore)
 	assert.Equal(t, true, game.IsValidBowl())
 	game.Bowl([]int{4, 5, 6})
-	assert.Equal(t, [12]int{6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, 3, game.Pairs[0].FirstScore)
+	assert.Equal(t, 3, game.Pairs[0].SecondScore)
 	game.Bowl([]int{4, 5, 6})
 	game.Bowl([]int{})
-	assert.Equal(t, [12]int{6, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, 3, game.Pairs[0].FirstScore)
+	assert.Equal(t, 3, game.Pairs[0].SecondScore)
+	assert.Equal(t, 3, game.Pairs[1].FirstScore)
+	assert.Equal(t, 0, game.Pairs[1].SecondScore)
 	game.Bowl([]int{})
 	game.Bowl([]int{})
+	assert.Equal(t, 0, game.Pairs[2].FirstScore)
+	assert.Equal(t, 0, game.Pairs[2].SecondScore)
 	game.Bowl([]int{4, 5, 6})
 	game.Bowl([]int{1, 2, 3, 7, 8, 9, 10})
+	assert.Equal(t, 3, game.Pairs[3].FirstScore)
+	assert.Equal(t, 7, game.Pairs[3].SecondScore)
 	game.Bowl([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	assert.Equal(t, 10, game.Pairs[4].FirstScore)
+	assert.Equal(t, 0, game.Pairs[4].SecondScore)
 	game.Bowl([]int{})
 	game.Bowl([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-	assert.Equal(t, [12]int{6, 3, 0, 10, 10, 10, 0, 0, 0, 0, 0, 0}, game.FrameScores)
+	assert.Equal(t, 0, game.Pairs[5].FirstScore)
+	assert.Equal(t, 10, game.Pairs[5].SecondScore)
+}
+
+func TestGame_NotifyUpdate(t *testing.T) {
+	scoreboard1 := scoreboard.New()
+	game := New(scoreboard1)
+	game.Bowl([]int{1, 2, 3})
+	game.Bowl([]int{4, 5})
+	game.NotifyUpdate()
+	assert.Equal(t, scoreboard1.Print(), "32(5)G-(5)G-(5)G-(5)G-(5)G-(5)G-(5)G-(5)G-(5)G0-(5)")
 }

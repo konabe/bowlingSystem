@@ -1,7 +1,7 @@
 package pins
 
 import (
-	pinNumbers "bowlingSystem/bowling/pins/numbers"
+	"bowlingSystem/bowling/game/pins/numbers"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
